@@ -1,0 +1,11 @@
+project:
+  name: Load Balancer Service
+  pprofPort: 9200
+
+servicePool:
+  cacheEnabled: false
+  balancingAlgorithm: roundRobin
+  servicesPool:
+    - http://localhost:9001
+    - http://localhost:9002
+    - http://localhost:9003

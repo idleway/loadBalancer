@@ -1,0 +1,64 @@
+openapi: "3.0.0"
+info:
+  title: Load Balancer Admin API Service
+  description: Load Balancer Admin API Service
+  version: 1.0.0
+
+servers:
+  - url: "http://127.0.0.1:9100"
+    description: "Development Server"
+
+
+
+paths:
+
+  /admin/describe_config:
+    post:
+      summary: Получить текущую конфигурацию
+      responses:
+        '200':
+          description: Успешный результат
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/serviceConfiguration'
+        '500':
+          description: Ошибка получения конфигурации
+  /admin/store_config:
+    post:
+      summary: Записать новую конфигурацию
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/serviceConfiguration'
+      responses:
+        '200':
+          description: Успешный результат
+        '500':
+          description: Ошибка записи конфигурации
+
+components:
+  schemas:
+    serviceConfiguration:
+      type: object
+      properties:
+        cacheEnabled:
+          type: boolean
+        balancingAlgorithm:
+          type: string
+          enum:
+            - roundRobin
+            - random
+            - leastConnections
+            - averageResponseTime
+        servicesPool:
+          type: array
+          items:
+            description: URL адрес
+            example: http://localhost:9001
+            type: string
+      required:
+        - cacheEnabled
+        - balancingAlgorithm
+        - servicesPool
